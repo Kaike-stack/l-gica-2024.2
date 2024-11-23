@@ -1,0 +1,19 @@
+<script>
+//2) Escreva um programa para ler uma temperatura em graus Fahrenheit, calcular e escrever o valor correspondente em graus Celsius. (C = (F-32) * 5 / 9) 
+//Entrada
+let temperatura = prompt("Digite a temperatura em graus Fahrenheit")
+console.log("Temp.F: ", temperatura)
+
+//processamento
+function calculartemperatura(temp) {
+
+let resposta = (temp - 32) * 5 / 9
+console.log("Resp", resposta)
+return resposta
+}
+
+//saída
+
+//document write melhor para respostas
+document.write("A temperatura em graus Celsius:" + calculartemperatura(temperatura))
+</script>
