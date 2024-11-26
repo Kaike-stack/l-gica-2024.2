@@ -1,0 +1,39 @@
+<script>
+// Cálculo da média semestral e do resultado final Instrução: Melhore o programa anterior para que, além de exibir a mensagem de aprovação, ele também exibe uma mensagem de falha se a média for menor que 6,0.
+// Função para calcular a média
+function calcularMedia(nota1, nota2) {
+  return (nota1 + nota2) / 2;
+}
+
+
+function exibirResultado(media) {
+  if (media >= 6.0) {
+    document.write("Aprovado! Sua média semestral é: " + media);
+  } else {
+    document.write("Falha! Sua média semestral é: " + media);
+  }
+}
+
+// Solicita as notas do aluno
+let nota1 = parseFloat(prompt("Digite a primeira nota:"));
+let nota2 = parseFloat(prompt("Digite a segunda nota:"));
+
+
+let media = calcularMedia(nota1, nota2);
+
+
+exibirResultado(media);
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
