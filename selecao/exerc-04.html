@@ -1,0 +1,20 @@
+<script>
+//Cálculo da média semestral e do resultado final Instrução: Melhore o programa anterior para que, além de exibir a mensagem de aprovação, ele também exibe uma mensagem de falha se a média for menor que 6,0.
+
+
+//entrada
+let nota1 = parseFloat(prompt("Digite a nota da primeira prova:"));
+let nota2 = parseFloat(prompt("Digite a nota da segunda prova:"));
+//processamento
+let mediaSemestral = (nota1 + nota2) / 2;
+
+if (mediaSemestral >= 6.0) {
+    //saída
+    document.write("Aprovado! Parabéns!");
+} else {
+    document.write("Falha! Você foi reprovado.");
+}
+
+
+
+</script>
