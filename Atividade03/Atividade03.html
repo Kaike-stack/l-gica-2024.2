@@ -1,153 +1,105 @@
+<script>
+//Entrar ou se inscrever
+// Função para criar uma conta bancária
+function criarConta(titular, tipo) {
+  let saldo = 0.0;
 
+  // Função para realizar depósitos
+  function depositar(valor) {
+    if (valor > 0) {
+      saldo += valor;
+      console.log(`Depósito de R$ ${valor.toFixed(2)} realizado com sucesso.`);
+    } else {
+      console.log("O valor do depósito deve ser positivo.");
+    }
+  }
 
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
- 
- 
- 
- 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Contas Bancárias</title>
-</head>
-<body>
-    <h1>Sistema de Contas Bancárias</h1>
-    <button onclick="menu()">Iniciar Sistema</button>
-    <div id="output"></div>
+  // Função para realizar retiradas
+  function retirar(valor) {
+    if (valor > 0) {
+      if (valor <= saldo) {
+        saldo -= valor;
+        alert(`Retirada de R$ ${valor.toFixed(2)} realizada com sucesso.`);
+      } else {
+        alert("Saldo insuficiente para realizar a retirada.");
+      }
+    } else {
+      alert("O valor da retirada deve ser positivo.");
+    }
+  }
 
-    <script>
-        // Lista para armazenar as contas
-        const contas = [];
+  // Função para consultar o saldo
+  function consultarSaldo() {
+    alert(`Saldo atual: R$ ${saldo.toFixed(2)}`);
+  }
 
-        // Função para criar uma nova conta
-        function criarConta() {
-            const titular = prompt("Digite o nome do titular da conta:");
-            const tipo = prompt("Digite o tipo da conta (corrente ou poupança):").toLowerCase();
+  // Função para exibir os dados da conta
+  function exibirDados() {
+    alert(`Titular: ${titular}`);
+    alert(`Tipo da conta: ${tipo}`);
+    consultarSaldo();
+  }
 
-            if (!titular || !tipo || (tipo !== "corrente" && tipo !== "poupança")) {
-                alert("Erro: Dados inválidos. Por favor, preencha corretamente o nome e o tipo de conta.");
-                return;
-            }
-//Sistema de conta bancária
-//gerenciamento de contas bancárias
-//com criação de contas, depósitos, retiradas e consulta do saldo
-//deve gerenciar conta corrente e poupança. Permitir que o usuário crie contas e realize operações (depósito, retirada) através de um menu interativo. Validar o valor dos depósitos e retiradas, assegurando que não sejam negativos.
-            const conta = {
-                titular: titular,
-                saldo: 0,
-                tipo: tipo,
-                depositar(valor) {
-                    if (valor > 0) {
-                        this.saldo += valor;
-                        alert(`Depósito de R$${valor.toFixed(2)} realizado com sucesso. Saldo atual: R$${this.saldo.toFixed(2)}.`);
-                    } else {
-                        alert("Erro: O valor do depósito deve ser positivo.");
-                    }
-                },
-                retirar(valor) {
-                    if (valor > 0) {
-                        if (this.saldo >= valor) {
-                            this.saldo -= valor;
-                            alert(`Retirada de R$${valor.toFixed(2)} realizada com sucesso. Saldo atual: R$${this.saldo.toFixed(2)}.`);
-                        } else {
-                            alert("Erro: Saldo insuficiente.");
-                        }
-                    } else {
-                        alert("Erro: O valor da retirada deve ser positivo.");
-                    }
-                },
-                consultarSaldo() {
-                    alert(`Saldo atual: R$${this.saldo.toFixed(2)}.`);
-                },
-                exibirDados() {
-                    alert(`Titular: ${this.titular}\nTipo: ${this.tipo}\nSaldo: R$${this.saldo.toFixed(2)}`);
-                }
-            };
+  // Retorna as funções para manipular a conta
+  return {
+    depositar,
+    retirar,
+    consultarSaldo,
+    exibirDados
+  };
+}
 
-            contas.push(conta);
-            alert(`Conta criada com sucesso! Bem-vindo(a), ${titular}.`);
-        }
+// Função para criar uma conta bancária a partir das entradas do usuário
+function criarContaBancaria() {
+  const titular = prompt("Informe o nome do titular da conta:");
+  let tipo = prompt("Informe o tipo da conta (corrente ou poupanca):").toLowerCase();
 
-        // Função para encontrar uma conta pelo nome do titular
-        function encontrarConta(titular) {
-            return contas.find(conta => conta.titular === titular);
-        }
+  // Validando o tipo da conta
+  if (tipo !== "corrente" && tipo !== "poupanca") {
+    alert("Tipo de conta inválido. A conta será criada como 'corrente'.");
+    tipo = "corrente";
+  }
 
-        // Menu interativo
-        function menu() {
-            let opcao;
+  // Cria a conta e retorna o objeto de funções
+  const conta = criarConta(titular, tipo);
+  alert(`Conta criada com sucesso para ${titular} do tipo ${tipo}.`);
+  return conta;
+}
 
-            do {
-                opcao = prompt(
-                    "Sistema de Gerenciamento de Contas Bancárias\n" +
-                    "1. Criar Conta\n" +
-                    "2. Entrar na Conta\n" +
-                    "3. Sair\n" +
-                    "Escolha uma opção:"
-                );
+// Função para exibir o menu e realizar as operações
+function menu() {
+  const conta = criarContaBancaria();
 
-                switch (opcao) {
-                    case "1":
-                        criarConta();
-                        break;
-                    case "2":
-                        const titular = prompt("Digite o nome do titular da conta que deseja acessar:");
-                        const conta = encontrarConta(titular);
+  let opcao = "";
+  while (opcao !== "5") {
+    alert(`\nMenu: 
+    1. Depositar 
+    2. Retirar 
+    3. Consultar Saldo 
+    4. Exibir Dados" 
+    5. Sair`);
+    
+    opcao = prompt("Escolha uma opção:");
 
-                        if (!conta) {
-                            alert("Erro: Conta não encontrada.");
-                            break;
-                        }
+    if (opcao === "1") {
+      const valorDeposito = parseFloat(prompt("Informe o valor do depósito:"));
+      conta.depositar(valorDeposito);
+    } else if (opcao === "2") {
+      const valorRetirada = parseFloat(prompt("Informe o valor da retirada:"));
+      conta.retirar(valorRetirada);
+    } else if (opcao === "3") {
+      conta.consultarSaldo();
+    } else if (opcao === "4") {
+      conta.exibirDados();
+    } else if (opcao === "5") {
+      alert("Saindo do sistema...");
+    } else {
+      alert("Opção inválida. Tente novamente.");
+    }
+  }
+}
 
-                        let operacao;
-                        do {
-                            operacao = prompt(
-                                `Bem-vindo(a), ${conta.titular}!\n` +
-                                "1. Depositar\n" +
-                                "2. Retirar\n" +
-                                "3. Consultar Saldo\n" +
-                                "4. Exibir Dados da Conta\n" +
-                                "5. Sair da Conta\n" +
-                                "Escolha uma operação:"
-                            );
+// Chamando o menu para iniciar o sistema
+menu();
 
-                            switch (operacao) {
-                                case "1":
-                                    const valorDeposito = parseFloat(prompt("Digite o valor do depósito:"));
-                                    conta.depositar(valorDeposito);
-                                    break;
-                                case "2":
-                                    const valorRetirada = parseFloat(prompt("Digite o valor da retirada:"));
-                                    conta.retirar(valorRetirada);
-                                    break;
-                                case "3":
-                                    conta.consultarSaldo();
-                                    break;
-                                case "4":
-                                    conta.exibirDados();
-                                    break;
-                                case "5":
-                                    alert("Saindo da conta...");
-                                    break;
-                                default:
-                                    alert("Operação inválida. Tente novamente.");
-                            }
-                        } while (operacao !== "5");
-                        break;
-                    case "3":
-                        alert("Saindo do sistema. Até logo!");
-                        break;
-                    default:
-                        alert("Opção inválida. Tente novamente.");
-                }
-            } while (opcao !== "3");
-        }
-    </script>
-</body>
-</html>
-
-
-
-
-
+</script>
