@@ -1,23 +1,153 @@
-<script>
+
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+ 
+ 
+ 
+ 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Contas Bancárias</title>
+</head>
+<body>
+    <h1>Sistema de Contas Bancárias</h1>
+    <button onclick="menu()">Iniciar Sistema</button>
+    <div id="output"></div>
+
+    <script>
+        // Lista para armazenar as contas
+        const contas = [];
+
+        // Função para criar uma nova conta
+        function criarConta() {
+            const titular = prompt("Digite o nome do titular da conta:");
+            const tipo = prompt("Digite o tipo da conta (corrente ou poupança):").toLowerCase();
+
+            if (!titular || !tipo || (tipo !== "corrente" && tipo !== "poupança")) {
+                alert("Erro: Dados inválidos. Por favor, preencha corretamente o nome e o tipo de conta.");
+                return;
+            }
 //Sistema de conta bancária
 //gerenciamento de contas bancárias
 //com criação de contas, depósitos, retiradas e consulta do saldo
 //deve gerenciar conta corrente e poupança. Permitir que o usuário crie contas e realize operações (depósito, retirada) através de um menu interativo. Validar o valor dos depósitos e retiradas, assegurando que não sejam negativos.
+            const conta = {
+                titular: titular,
+                saldo: 0,
+                tipo: tipo,
+                depositar(valor) {
+                    if (valor > 0) {
+                        this.saldo += valor;
+                        alert(`Depósito de R$${valor.toFixed(2)} realizado com sucesso. Saldo atual: R$${this.saldo.toFixed(2)}.`);
+                    } else {
+                        alert("Erro: O valor do depósito deve ser positivo.");
+                    }
+                },
+                retirar(valor) {
+                    if (valor > 0) {
+                        if (this.saldo >= valor) {
+                            this.saldo -= valor;
+                            alert(`Retirada de R$${valor.toFixed(2)} realizada com sucesso. Saldo atual: R$${this.saldo.toFixed(2)}.`);
+                        } else {
+                            alert("Erro: Saldo insuficiente.");
+                        }
+                    } else {
+                        alert("Erro: O valor da retirada deve ser positivo.");
+                    }
+                },
+                consultarSaldo() {
+                    alert(`Saldo atual: R$${this.saldo.toFixed(2)}.`);
+                },
+                exibirDados() {
+                    alert(`Titular: ${this.titular}\nTipo: ${this.tipo}\nSaldo: R$${this.saldo.toFixed(2)}`);
+                }
+            };
+
+            contas.push(conta);
+            alert(`Conta criada com sucesso! Bem-vindo(a), ${titular}.`);
+        }
+
+        // Função para encontrar uma conta pelo nome do titular
+        function encontrarConta(titular) {
+            return contas.find(conta => conta.titular === titular);
+        }
+
+        // Menu interativo
+        function menu() {
+            let opcao;
+
+            do {
+                opcao = prompt(
+                    "Sistema de Gerenciamento de Contas Bancárias\n" +
+                    "1. Criar Conta\n" +
+                    "2. Entrar na Conta\n" +
+                    "3. Sair\n" +
+                    "Escolha uma opção:"
+                );
+
+                switch (opcao) {
+                    case "1":
+                        criarConta();
+                        break;
+                    case "2":
+                        const titular = prompt("Digite o nome do titular da conta que deseja acessar:");
+                        const conta = encontrarConta(titular);
+
+                        if (!conta) {
+                            alert("Erro: Conta não encontrada.");
+                            break;
+                        }
+
+                        let operacao;
+                        do {
+                            operacao = prompt(
+                                `Bem-vindo(a), ${conta.titular}!\n` +
+                                "1. Depositar\n" +
+                                "2. Retirar\n" +
+                                "3. Consultar Saldo\n" +
+                                "4. Exibir Dados da Conta\n" +
+                                "5. Sair da Conta\n" +
+                                "Escolha uma operação:"
+                            );
+
+                            switch (operacao) {
+                                case "1":
+                                    const valorDeposito = parseFloat(prompt("Digite o valor do depósito:"));
+                                    conta.depositar(valorDeposito);
+                                    break;
+                                case "2":
+                                    const valorRetirada = parseFloat(prompt("Digite o valor da retirada:"));
+                                    conta.retirar(valorRetirada);
+                                    break;
+                                case "3":
+                                    conta.consultarSaldo();
+                                    break;
+                                case "4":
+                                    conta.exibirDados();
+                                    break;
+                                case "5":
+                                    alert("Saindo da conta...");
+                                    break;
+                                default:
+                                    alert("Operação inválida. Tente novamente.");
+                            }
+                        } while (operacao !== "5");
+                        break;
+                    case "3":
+                        alert("Saindo do sistema. Até logo!");
+                        break;
+                    default:
+                        alert("Opção inválida. Tente novamente.");
+                }
+            } while (opcao !== "3");
+        }
+    </script>
+</body>
+</html>
 
 
-let nome = ""
-let idade = 30
-let mensagem = `meu nome é ${nome}`
 
 
 
-
-
-
-
-
-
-
-
-
-</script>
